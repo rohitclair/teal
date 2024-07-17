@@ -41,7 +41,10 @@ ui_data <- function(id, data, title, header, footer) {
   shiny::div(
     style = "display: inline-block;",
     if (inherits(data, "teal_data_module")) {
-      actionButton(ns("open_teal_data_module"), NULL, icon = icon("database"))
+      tags$div(
+        data$ui(ns("teal_data_module")),
+        ui_validate_reactive_teal_data(ns("validate_teal_data"))
+      )
     } else {
       NULL
     }
@@ -75,28 +78,28 @@ srv_data <- function(id, data, modules, filter = teal_slices()) {
 
     data_validated <- srv_validate_reactive_teal_data("validate_teal_data", data_unvalidated, modules, filter)
 
-    setBookmarkExclude("open_teal_data_module")
+    # setBookmarkExclude("open_teal_data_module")
 
-    observeEvent(input$open_teal_data_module, {
-      if (input$open_teal_data_module > 1) {
-        footer <- modalButton("Dismiss")
-        easy_close <- TRUE
-      } else {
-        footer <- NULL
-        easy_close <- FALSE
-      }
-      showModal(
-        modalDialog(
-          class = ifelse(easy_close, "blur_background", "hide_background"),
-          tags$div(
-            data$ui(session$ns("teal_data_module")),
-            ui_validate_reactive_teal_data(session$ns("validate_teal_data"))
-          ),
-          footer = footer,
-          easyClose = easy_close
-        )
-      )
-    })
+    # observeEvent(input$open_teal_data_module, {
+    #   if (input$open_teal_data_module > 1) {
+    #     footer <- modalButton("Dismiss")
+    #     easy_close <- TRUE
+    #   } else {
+    #     footer <- NULL
+    #     easy_close <- FALSE
+    #   }
+    #   showModal(
+    #     modalDialog(
+    #       class = ifelse(easy_close, "blur_background", "hide_background"),
+    #       tags$div(
+    #         data$ui(session$ns("teal_data_module")),
+    #         ui_validate_reactive_teal_data(session$ns("validate_teal_data"))
+    #       ),
+    #       footer = footer,
+    #       easyClose = easy_close
+    #     )
+    #   )
+    # })
 
     if (inherits(data, "teal_data_module")) {
       shinyjs::disable(selector = "#teal_modules-active_tab.nav-tabs a")

@@ -84,11 +84,13 @@ ui_teal <- function(id,
   )
 
   data_elem <- ui_data(ns("data"), data = data, title = title, header = header, footer = footer)
-  tabs_elem <- ui_teal_module(id = ns("teal_modules"), modules = modules)
+  modules$children <- c(list(teal_data_module = data_elem), modules$children)
+  tabs_elem <- ui_teal_module(id = ns("teal_modules"), modules = modules, data_ui = data_elem)
 
   fluidPage(
     title = title,
     theme = get_teal_bs_theme(),
+    style = "margin-left: 60px;",
     include_teal_css_js(),
     tags$header(header),
     tags$hr(class = "my-2"),
@@ -97,15 +99,14 @@ ui_teal <- function(id,
     tags$div(
       id = "teal-util-icons",
       style = "margin-left: auto;",
-      data_elem,
-      ui_bookmark_panel(ns("bookmark_manager"), modules),
-      tags$button(
-        class = "btn action-button filter_hamburger", # see sidebar.css for style filter_hamburger
-        href = "javascript:void(0)",
-        onclick = "toggleFilterPanel();", # see sidebar.js
-        title = "Toggle filter panel",
-        icon("fas fa-bars")
-      ),
+      # ui_bookmark_panel(ns("bookmark_manager"), modules),
+      # tags$button(
+      #   class = "btn action-button filter_hamburger", # see sidebar.css for style filter_hamburger
+      #   href = "javascript:void(0)",
+      #   onclick = "toggleFilterPanel();", # see sidebar.js
+      #   title = "Toggle filter panel",
+      #   icon("fas fa-bars")
+      # ),
       ui_snapshot_manager_panel(ns("snapshot_manager_panel")),
       ui_filter_manager_panel(ns("filter_manager_panel"))
     ),
