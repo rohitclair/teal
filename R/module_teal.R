@@ -83,7 +83,12 @@ ui_teal <- function(id,
     )
   )
 
-  show_tdm_button <- actionButton(ns("show_teal_data_module"), "Data", icon("fas fa-database"))
+  show_tdm_button <- actionButton(
+    ns("show_teal_data_module"),
+    "Data",
+    icon("fas fa-database"),
+    style = "display: inline-flex; margin-right: 10px;"
+  )
   data_elem <- ui_data(ns("data"), data = data, title = title, header = header, footer = footer)
   tabs_elem <- ui_teal_module(id = ns("teal_modules"), modules = modules)
 
