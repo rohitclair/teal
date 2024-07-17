@@ -42,6 +42,7 @@ ui_data <- function(id, data, title, header, footer) {
     style = "display: inline-block;",
     if (inherits(data, "teal_data_module")) {
       tags$div(
+        id = "teal-data-module",
         data$ui(ns("teal_data_module")),
         ui_validate_reactive_teal_data(ns("validate_teal_data"))
       )

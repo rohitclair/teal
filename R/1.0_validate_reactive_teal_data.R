@@ -97,6 +97,8 @@ srv_validate_reactive_teal_data <- function(id, data, modules, filter) {
       if (!is.null(data_validated())) {
         showNotification("Data loaded successfully.", duration = 5)
         shinyjs::enable(selector = "#teal_modules-active_tab.nav-tabs a")
+        shinyjs::show("main-teal-ui", asis = TRUE)
+        shinyjs::hide("teal-data-module", asis = TRUE)
         removeModal()
       }
       NULL

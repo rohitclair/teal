@@ -83,11 +83,9 @@ ui_teal <- function(id,
     )
   )
 
+  show_tdm_button <- actionButton(ns("show_teal_data_module"), "Data", icon("fas fa-database"))
   data_elem <- ui_data(ns("data"), data = data, title = title, header = header, footer = footer)
-  if (!is.null(data)) {
-    modules$children <- c(list(teal_data_module = data_elem), modules$children)
-  }
-  tabs_elem <- ui_teal_module(id = ns("teal_modules"), modules = modules, data_ui = data_elem)
+  tabs_elem <- ui_teal_module(id = ns("teal_modules"), modules = modules)
 
   fluidPage(
     title = title,
@@ -96,7 +94,12 @@ ui_teal <- function(id,
     include_teal_css_js(),
     tags$header(header),
     tags$hr(class = "my-2"),
+    tags$div(
+      id = "teal-data-icon",
+      show_tdm_button
+    ),
     shiny_busy_message_panel,
+    data_elem,
     tabs_elem,
     tags$div(
       id = "teal-util-icons",
@@ -118,8 +121,10 @@ ui_teal <- function(id,
           "
             $(document).ready(function() {
               $('#teal-util-icons').appendTo('#%s');
+              $('#teal-data-icon').prependTo('#%s');
             });
           ",
+          ns("teal_modules-active_tab"),
           ns("teal_modules-active_tab")
         )
       )
@@ -209,5 +214,10 @@ srv_teal <- function(id, data, modules, filter = teal_slices()) {
       modules = modules,
       slices_global = slices_global
     )
+
+    observeEvent(input$show_teal_data_module, {
+      shinyjs::hide("main-teal-ui", asis = TRUE)
+      shinyjs::show("teal-data-module", asis = TRUE)
+    })
   })
 }
